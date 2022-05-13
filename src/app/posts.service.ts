@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
 import { Post } from "./post.model";
 
@@ -7,6 +8,7 @@ import { Post } from "./post.model";
   providedIn: "root",
 })
 export class PostsService {
+  error = new Subject<string>();
   firebaseUrl =
     "https://angular-course-70bd6-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
@@ -16,8 +18,21 @@ export class PostsService {
     const postData: Post = { title: title, content: content };
     this.http
       .post<{ name: string }>(this.firebaseUrl + "posts.json", postData)
-      .subscribe((responseData) => {
-        console.log(responseData);
+      // .subscribe(
+      //   (responseData) => {
+      //     console.log(responseData);
+      //   },
+      //   (error) => {
+      //     this.error.next(error.message);
+      //   }
+      // );
+      .subscribe({
+        next: (responseData) => {
+          console.log(responseData);
+        },
+        error: (e) => {
+          this.error.next(e.message);
+        },
       });
   }
 
