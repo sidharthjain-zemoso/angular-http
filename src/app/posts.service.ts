@@ -51,6 +51,7 @@ export class PostsService {
       .get<{ [key: string]: Post }>(this.firebaseUrl + "posts.json", {
         headers: new HttpHeaders({ CustomHeader: "hello" }),
         params: searchParams,
+        responseType: "json",
       })
       .pipe(
         map((responseData) => {
