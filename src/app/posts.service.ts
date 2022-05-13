@@ -33,6 +33,8 @@ export class PostsService {
       //     this.error.next(error.message);
       //   }
       // );
+      // passing an observer object
+      // subscribing the observable will only send the request
       .subscribe({
         next: (responseData) => {
           console.log(responseData.body);
