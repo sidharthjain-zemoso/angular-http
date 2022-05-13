@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
     // Send Http request
     console.log(postData);
 
-    //https://console.firebase.google.com/project/angular-course-70bd6/database/angular-course-70bd6-default-rtdb/data/~2F
+    // requests are sent only when you subscribe
     this.http
       .post(
         "https://angular-course-70bd6-default-rtdb.asia-southeast1.firebasedatabase.app/posts.json",
