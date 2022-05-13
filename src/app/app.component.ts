@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { Post } from "./post.model";
-import { PostService } from "./post.service";
+import { PostsService } from "./posts.service";
 
 @Component({
   selector: "app-root",
@@ -15,11 +15,11 @@ export class AppComponent implements OnInit {
   firebaseUrl =
     "https://angular-course-70bd6-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
-  constructor(private http: HttpClient, private postService: PostService) {}
+  constructor(private http: HttpClient, private postsService: PostsService) {}
 
   ngOnInit() {
     this.isFetching = true;
-    this.postService.fetchPosts().subscribe((posts) => {
+    this.postsService.fetchPosts().subscribe((posts) => {
       // console.log(posts);
       this.isFetching = false;
       this.loadedPosts = posts;
@@ -29,13 +29,13 @@ export class AppComponent implements OnInit {
   onCreatePost(postData: Post) {
     // Send Http request
     console.log(postData);
-    this.postService.createAndStorePost(postData.title, postData.content);
+    this.postsService.createAndStorePost(postData.title, postData.content);
   }
 
   onFetchPosts() {
     // Send Http request
     this.isFetching = true;
-    this.postService.fetchPosts().subscribe((posts) => {
+    this.postsService.fetchPosts().subscribe((posts) => {
       // console.log(posts);
       this.isFetching = false;
       this.loadedPosts = posts;
@@ -44,5 +44,8 @@ export class AppComponent implements OnInit {
 
   onClearPosts() {
     // Send Http request
+    this.postsService.deletePosts().subscribe(() => {
+      this.loadedPosts = [];
+    });
   }
 }

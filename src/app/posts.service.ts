@@ -6,7 +6,7 @@ import { Post } from "./post.model";
 @Injectable({
   providedIn: "root",
 })
-export class PostService {
+export class PostsService {
   firebaseUrl =
     "https://angular-course-70bd6-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
@@ -35,5 +35,9 @@ export class PostService {
           return postsArray;
         })
       );
+  }
+
+  deletePosts() {
+    return this.http.delete(this.firebaseUrl + "posts.json");
   }
 }
