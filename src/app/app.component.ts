@@ -8,10 +8,14 @@ import { HttpClient } from "@angular/common/http";
 })
 export class AppComponent implements OnInit {
   loadedPosts = [];
+  firebaseUrl =
+    "https://angular-course-70bd6-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchPosts();
+  }
 
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
@@ -19,10 +23,7 @@ export class AppComponent implements OnInit {
 
     // requests are sent only when you subscribe
     this.http
-      .post(
-        "https://angular-course-70bd6-default-rtdb.asia-southeast1.firebasedatabase.app/posts.json",
-        postData
-      )
+      .post(this.firebaseUrl + "posts.json", postData)
       .subscribe((responseData) => {
         console.log(responseData);
       });
@@ -30,9 +31,16 @@ export class AppComponent implements OnInit {
 
   onFetchPosts() {
     // Send Http request
+    this.fetchPosts();
   }
 
   onClearPosts() {
     // Send Http request
+  }
+
+  private fetchPosts() {
+    this.http.get(this.firebaseUrl + "posts.json").subscribe((posts) => {
+      console.log(posts);
+    });
   }
 }
