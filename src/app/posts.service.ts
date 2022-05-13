@@ -1,7 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpEventType,
+  HttpHeaders,
+  HttpParams,
+} from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Subject, throwError } from "rxjs";
-import { catchError, map } from "rxjs/operators";
+import { catchError, map, tap } from "rxjs/operators";
 import { Post } from "./post.model";
 
 @Injectable({
@@ -17,7 +22,9 @@ export class PostsService {
   createAndStorePost(title: string, content: string) {
     const postData: Post = { title: title, content: content };
     this.http
-      .post<{ name: string }>(this.firebaseUrl + "posts.json", postData)
+      .post<{ name: string }>(this.firebaseUrl + "posts.json", postData, {
+        observe: "response",
+      })
       // .subscribe(
       //   (responseData) => {
       //     console.log(responseData);
@@ -28,7 +35,7 @@ export class PostsService {
       // );
       .subscribe({
         next: (responseData) => {
-          console.log(responseData);
+          console.log(responseData.body);
         },
         error: (e) => {
           this.error.next(e.message);
@@ -62,6 +69,18 @@ export class PostsService {
   }
 
   deletePosts() {
-    return this.http.delete(this.firebaseUrl + "posts.json");
+    return this.http
+      .delete(this.firebaseUrl + "posts.json", { observe: "events" })
+      .pipe(
+        tap((event) => {
+          console.log(event);
+          if (event.type === HttpEventType.Sent) {
+            //...
+          }
+          if (event.type === HttpEventType.Response) {
+            console.log(event.body);
+          }
+        })
+      );
   }
 }
