@@ -10,6 +10,7 @@ import { Post } from "./post.model";
 })
 export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
+  isFetching = false;
   firebaseUrl =
     "https://angular-course-70bd6-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
@@ -41,6 +42,7 @@ export class AppComponent implements OnInit {
   }
 
   private fetchPosts() {
+    this.isFetching = true;
     this.http
       .get<{ [key: string]: Post }>(this.firebaseUrl + "posts.json")
       .pipe(
@@ -56,6 +58,7 @@ export class AppComponent implements OnInit {
       )
       .subscribe((posts) => {
         // console.log(posts);
+        this.isFetching = false;
         this.loadedPosts = posts;
       });
   }
