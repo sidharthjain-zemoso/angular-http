@@ -9,7 +9,7 @@ import { Post } from "./post.model";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
-  loadedPosts = [];
+  loadedPosts: Post[] = [];
   firebaseUrl =
     "https://angular-course-70bd6-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
     this.http
       .post<{ name: string }>(this.firebaseUrl + "posts.json", postData)
       .subscribe((responseData) => {
-        console.log(responseData);
+        // console.log(responseData);
       });
   }
 
@@ -55,7 +55,8 @@ export class AppComponent implements OnInit {
         })
       )
       .subscribe((posts) => {
-        console.log(posts);
+        // console.log(posts);
+        this.loadedPosts = posts;
       });
   }
 }
